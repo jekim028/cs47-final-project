@@ -2,15 +2,22 @@ import { useSpotifyAuth } from "../utils";
 import { StyleSheet, SafeAreaView, StatusBar } from "react-native";
 import SpotifyAuthButton from "../components/SpotifyAuthButton.js";
 import MainPage from "../components/MainPage";
+import { createContext } from "react";
+
+export const AuthContext = createContext(null);
 
 export default function HomeScreen(props) {
-    const { token, tracks, getSpotifyAuth } = useSpotifyAuth();
+    const { token, playlists, getSpotifyAuth } = useSpotifyAuth();
     const navigation = props.navigation
 
     let contentDisplayed = null;
 
     if (token) {
-        contentDisplayed = <MainPage />;
+        contentDisplayed = (
+            <AuthContext.Provider value={token}>
+                <MainPage playlists={playlists} />
+            </AuthContext.Provider>
+        );
     } else {
         contentDisplayed = (
             <SpotifyAuthButton authenticationFunction={getSpotifyAuth} />
@@ -27,9 +34,7 @@ export default function HomeScreen(props) {
 
 const styles = StyleSheet.create({
     container: {
-      backgroundColor: "white",
-      justifyContent: "center",
-      alignItems: "center",
-      flex: 1,
+        width: '100%',
+        flex: 1,
     },
   });

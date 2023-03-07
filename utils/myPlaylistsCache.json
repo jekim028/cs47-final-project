@@ -1,0 +1,34 @@
+[
+    {
+        "collaborative": false, 
+        "description": "", 
+        "external_urls": {
+            "spotify": "https://open.spotify.com/playlist/1UGBKkjO9ViojnhgLnG0LG"
+        }, 
+        "href": "https://api.spotify.com/v1/playlists/1UGBKkjO9ViojnhgLnG0LG", 
+        "id": "1UGBKkjO9ViojnhgLnG0LG", 
+        "images": [
+            ["Object"], 
+            ["Object"], 
+            ["Object"]
+        ], 
+        "name": "day luigi ", 
+        "owner": {
+            "display_name": "jenna", 
+            "external_urls": ["Object"], 
+            "href": "https://api.spotify.com/v1/users/jennak2002", 
+            "id": "jennak2002", 
+            "type": "user", 
+            "uri": "spotify:user:jennak2002"
+        }, 
+        "primary_color": null, 
+        "public": true, 
+        "snapshot_id": "OSwxM2I1MGZjMzdjOTU3NGM0MjZjNTViM2MxMjA1YmU0MTJhNWU1N2Fk", 
+        "tracks": {
+            "href": "https://api.spotify.com/v1/playlists/1UGBKkjO9ViojnhgLnG0LG/tracks", 
+            "total": 8
+        }, 
+        "type": "playlist", 
+        "uri": "spotify:playlist:1UGBKkjO9ViojnhgLnG0LG"
+    }
+]

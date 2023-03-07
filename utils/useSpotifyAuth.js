@@ -6,7 +6,7 @@ import {
   useAuthRequest,
   makeRedirectUri,
 } from "expo-auth-session";
-// import { getMyTopTracks, getAlbumTracks } from "./apiOptions";
+import { getMyPlaylists } from "./apiOptions";
 
 import * as WebBrowser from "expo-web-browser";
 
@@ -22,22 +22,19 @@ const {
 WebBrowser.maybeCompleteAuthSession();
 
 const formatter = (data) => data.map((val) => {
-  const artists = val.artists?.map((artist) => ({ name: artist.name }));
-  // returning undefined for now to not confuse students, ideally a fix would be a hosted version of this
-  return ({
-    songTitle: val.name,
-    songArtists: artists,
-    albumName: val.album?.name,
-    imageUrl: val.album?.images[0]?.url ?? undefined,
-    duration: val.duration_ms,
-    externalUrl: val.external_urls?.spotify ?? undefined,
-    previewUrl: val.preview_url ?? undefined,
-  });
+    return ({
+        playlistId: val.id,
+        playlistDescription: val.description,
+        playlistName: val.name,
+        playlistTracks: val.tracks,
+        playlistImageUrl: val?.images[0]?.url ?? undefined,
+    });
 });
+
 
 const useSpotifyAuth = (ALBUM_ONLY = false) => {
   const [token, setToken] = useState("");
-  const [tracks, setTracks] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
   const [_, response, promptAsync] = useAuthRequest(
     {
       responseType: ResponseType.Token,
@@ -68,25 +65,19 @@ const useSpotifyAuth = (ALBUM_ONLY = false) => {
       setToken(location.hash.split("=")[1]);
   }, [response]);
 
-//   useEffect(() => {
-//     const fetchTracks = async () => {
-//       let res;
-//       switch (ALBUM_ONLY) {
-//         case true:
-//           res = await getAlbumTracks(ALBUM_ID, token);
-//           break;
-//         default:
-//           res = await getMyTopTracks(token);
-//           break;
-//       }
-//       setTracks(formatter(res));
-//     };
+  useEffect(() => {
+    const fetchPlaylists = async () => {
+        let res;
+        res = await getMyPlaylists(token);
+        console.log(res);
+        setPlaylists(formatter(res))
+    };
 
-//     if (token) {
-//       // Authenticated, make API request
-//       fetchTracks();
-//     }
-//   }, [token]);
+    if (token) {
+        fetchPlaylists();
+    }
+  }, [token]);
+
 
   const setLoggedIn = () => {
     promptAsync(
@@ -97,7 +88,7 @@ const useSpotifyAuth = (ALBUM_ONLY = false) => {
     );
   };
   // TO DO: pick better naming conventions
-  return { token: token ?? undefined, tracks, getSpotifyAuth: setLoggedIn };
+  return { token: token ?? undefined, playlists, getSpotifyAuth: setLoggedIn };
 };
 
 export default useSpotifyAuth;

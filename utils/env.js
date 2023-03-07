@@ -37,6 +37,10 @@ const ENV = {
       authorizationEndpoint: "https://accounts.spotify.com/authorize",
       tokenEndpoint: "https://accounts.spotify.com/api/token",
     },
+    USER_PLAYLISTS_GETTER:
+        "https://api.spotify.com/v1/me/playlists",
+    PLAYLIST_TRACK_GETTER: (playlistId) =>
+        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
     SHORT_TERM_API:
       "https://api.spotify.com/v1/me/top/tracks?time_range=short_term",
     LONG_TERM_API:

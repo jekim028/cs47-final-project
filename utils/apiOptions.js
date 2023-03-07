@@ -4,7 +4,7 @@ import axios from 'axios';
 import getEnv from './env';
 
 const {
-  SPOTIFY_API: { SHORT_TERM_API, LONG_TERM_API, ALBUM_TRACK_API_GETTER },
+  SPOTIFY_API: { USER_PLAYLISTS_GETTER },
 } = getEnv();
 
 const NETWORK_FAILURE = new Error(
@@ -23,6 +23,33 @@ const fetcher = async (url, token) => {
     });
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getMyPlaylists = async (token) => {
+    const cache = "ERROR";
+    // const cache = { data: {items: CachedTopTracks }};
+    try {
+        let res = await fetcher(USER_PLAYLISTS_GETTER, token);
+        if (!res || !res.data?.items.length) res = cache;
+        return res.data?.items;
+    } catch (e) {
+        console.error(e);
+        alert(NETWORK_FAILURE);
+        return cache;
+    }
+};
+
+export const getPlaylistTracks = async (token) => {
+  const cache = "ERROR";
+  try {
+    let res = await fetcher(PLAYLIST_TRACK_GETTER(playlistId), token);
+    if (!res || !res.data?.items.length) res = cache;
+    return res.data?.items;
+  } catch (e) {
+    console.error(e);
+    alert(NETWORK_FAILURE);
+    return cache;
   }
 };
 
